@@ -1,0 +1,94 @@
+{% extends 'base/base.html' %}
+{% load static %}
+{% block css %}
+    <link href="{% static 'lib/select2/css/select2.min.css' %}" rel="stylesheet">
+    <link href="{% static 'lib/ion-rangeslider/css/ion.rangeSlider.min.css' %}" rel="stylesheet">
+{% endblock %}
+{% block content %}
+    <div class="container">
+{#        <h1 class="df-title">{% if request.get_full_path == '/kajian/' %}Kajian{% else %}Edit Kajian{% endif %}</h1>#}
+        <form action="" method="post" enctype='multipart/form-data'>
+            {% csrf_token %}
+            <div class="form-row">
+
+                <div class="form-group col-lg-6">
+                    {% for i in form %}
+                        <label for="formGroupExampleInput" class="d-block">{{ i.label }}</label>
+                        {{ i }}
+                    {% endfor %}
+                </div>
+            </div>
+            <button class="btn btn-primary" type="submit">Submit</button>
+            <button class="btn btn-secondary" type="cancel">Cancel</button>
+        </form>
+    </div>
+{% endblock %}
+
+{% block js %}
+    <script src="{% static 'lib/select2/js/select2.min.js' %}"></script>
+    <script src="{% static 'lib/prismjs/prism.js' %}"></script>
+    <script>
+        // Adding placeholder for search input
+        (function ($) {
+
+            'use strict'
+
+            var Defaults = $.fn.select2.amd.require('select2/defaults');
+
+            $.extend(Defaults.defaults, {
+                searchInputPlaceholder: ''
+            });
+
+            var SearchDropdown = $.fn.select2.amd.require('select2/dropdown/search');
+
+            var _renderSearchDropdown = SearchDropdown.prototype.render;
+
+            SearchDropdown.prototype.render = function (decorated) {
+
+                // invoke parent method
+                var $rendered = _renderSearchDropdown.apply(this, Array.prototype.slice.apply(arguments));
+
+                this.$search.attr('placeholder', this.options.get('searchInputPlaceholder'));
+
+                return $rendered;
+            };
+
+        })(window.jQuery);
+
+
+        $(function () {
+            'use strict'
+
+            // Basic with search
+            $('.select2').select2({
+                placeholder: 'Choose one',
+                searchInputPlaceholder: 'Search options'
+            });
+
+            // Disable search
+            $('.select2-no-search').select2({
+                minimumResultsForSearch: Infinity,
+                placeholder: 'Choose one'
+            });
+
+            // Clearable selection
+            $('.select2-clear').select2({
+                minimumResultsForSearch: Infinity,
+                placeholder: 'Choose one',
+                allowClear: true
+            });
+
+            // Limit selection
+            $('.select2-limit').select2({
+                minimumResultsForSearch: Infinity,
+                placeholder: 'Choose one',
+                maximumSelectionLength: 2
+            });
+
+            $('#datepicker1').datepicker();
+
+        });
+    </script>
+{% endblock %}
+
+

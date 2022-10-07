@@ -59,11 +59,11 @@
 <header class="navbar navbar-header navbar-header-fixed">
     <a href="" id="sidebarMenuOpen" class="burger-menu"><i data-feather="arrow-left"></i></a>
     <div class="navbar-brand">
-{#        <a href="{% url 'kajian:home' %}" class="df-logo">dash<span>forge</span></a>#}
+        <a href="{% url 'surat:home' %}" class="df-logo">dash<span>forge</span></a>
     </div><!-- navbar-brand -->
     <div id="navbarMenu" class="navbar-menu-wrapper">
         <div class="navbar-menu-header">
-{#            <a href="{% url 'kajian:home' %}" class="df-logo">dash<span>forge</span></a>#}
+            <a href="{% url 'surat:home' %}" class="df-logo">dash<span>forge</span></a>
             <a id="mainMenuClose" href=""><i data-feather="x"></i></a>
         </div><!-- navbar-menu-header -->
         <ul class="nav navbar-menu">
@@ -78,47 +78,45 @@
             {#            </ul>#}
             {#          </li>#}
 
-            <li class="nav-item"><a href="{% url 'kajian:kajian_list' %}" class="nav-link"><i data-feather="box"></i>
-                Daftar Kajian</a></li>
+            <li class="nav-item"><a href="{% url 'surat:daftar-surat' %}" class="nav-link"><i data-feather="box"></i>
+                Daftar Nota Dinas</a></li>
             {#          <li class="nav-item active"><a href="index.html" class="nav-link"><i data-feather="box"></i> Daftar Kajian</a></li>#}
         </ul>
     </div><!-- navbar-menu-wrapper -->
     <div class="navbar-right col-md">
-{#        {% if user.is_authenticated %}#}
-{##}
-            {#            <label>{{ user.username }} - {{ user.profile.satker }}</label>#}
-{#            <div class="dropdown dropdown-notification">#}
-                {#                {% notifications_unread as unread_count %}#}
-{#                <a href="" class="dropdown-link new-indicator" data-toggle="dropdown">#}
-{#                    <i data-feather="bell"></i>#}
-                    {#                    <span>{{ unread_count }}</span>#}
-{#                    {% live_notify_badge %}#}
-{#                </a>#}
-{#                <div class="dropdown-menu dropdown-menu-right">#}
-{#                    <div class="dropdown-header">Notifications</div>#}
-{##}
-{##}
-{##}
-{##}
-{#                    <a href="" class="dropdown-item">#}
-{#                        <div class="media">#}
-                            {#                                <div class="avatar avatar-sm avatar-online"><img src="https://via.placeholder.com/350" class="rounded-circle" alt=""></div>#}
-{#                            <div class="media-body mg-l-15">#}
-{#                                {% live_notify_list %}#}
-{#                            </div><!-- media-body -->#}
-{#                        </div><!-- media -->#}
-{#                    </a>#}
-{##}
-{#                    <div class="dropdown-footer"><a href="{% url 'kajian:notifications' %}">View all Notifications</a></div>#}
-{#                </div><!-- dropdown-menu -->#}
-{#            </div><!-- dropdown -->#}
-{#            <a href="{% url 'logout' %}?next=/" class="btn btn-buy"><i#}
-{#                    data-feather="log-out"></i> <span>Logout</span></a>#}
-{#        {% else %}#}
-{#            <a href="{% url 'login' %}?next={{ request.path }}" class="btn btn-buy"><i#}
-{#                    data-feather="log-in"></i> <span>Login</span></a>#}
-{##}
-{#        {% endif %}#}
+        {% if user.is_authenticated %}
+
+            <label>{{ user.username }}</label>
+            <div class="dropdown dropdown-notification">
+                {% notifications_unread as unread_count %}
+                <a href="" class="dropdown-link new-indicator" data-toggle="dropdown">
+                    <i data-feather="bell"></i>
+                    <span>{{ unread_count }}</span>
+                    {% live_notify_badge %}
+                </a>
+                <div class="dropdown-menu dropdown-menu-right">
+                    <div class="dropdown-header">Notifications</div>
+
+
+                    <a href="" class="dropdown-item">
+                        <div class="media">
+{#                            <div class="avatar avatar-sm avatar-online"><img src="https://via.placeholder.com/350" class="rounded-circle" alt=""></div>#}
+                            <div class="media-body mg-l-15">
+                                {% live_notify_list %}
+                            </div><!-- media-body -->
+                        </div><!-- media -->
+                    </a>
+
+                    <div class="dropdown-footer"><a href="/">View all Notifications</a></div>
+                </div><!-- dropdown-menu -->
+            </div><!-- dropdown -->
+            <a href="{% url 'logout' %}?next=/" class="btn btn-buy"><i
+                    data-feather="log-out"></i> <span>Logout</span></a>
+        {% else %}
+            <a href="{% url 'login' %}?next={{ request.path }}" class="btn btn-buy"><i
+                    data-feather="log-in"></i> <span>Login</span></a>
+
+        {% endif %}
     </div><!-- az-header-right -->
 </header><!-- navbar -->
 

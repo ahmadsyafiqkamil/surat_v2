@@ -73,7 +73,7 @@ class Dokumen(models.Model):
                                       related_name='jenis')
     klasifikasi = models.ForeignKey(Klasifikasi, on_delete=models.CASCADE, verbose_name='Tujuan Dokumen',
                                     related_name='klasifikasi_dokumen')
-    file_dokumen = models.FileField(upload_to='document/%Y-%m-%d/', validators=[validate_file_extension])
+    file_dokumen = models.FileField(upload_to='document/%Y-%m-%d/', validators=[validate_file_extension], null=True, blank=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True, verbose_name='Pengirim',
                              related_name='pengirim')
     tujuan_eksternal = models.TextField(blank=True, null=True, verbose_name='Tujuan Eksternal')
