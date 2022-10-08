@@ -150,12 +150,12 @@
             location.href = "/edit_surat/" + clicked_id;
         }
 
-        {##}
-        {#function add(clicked_id) {#}
-        {#    console.log(clicked_id)#}
-        {#    location.href = "/kajian_detail/" + clicked_id;#}
-        {#}#}
-            {##}
+
+        function detail(clicked_id) {
+            console.log(clicked_id)
+            location.href = "/detail_surat/" + clicked_id;
+        }
+
             $(document).on('click', '#delete-item', () => {
                 document.getElementById("item-delete-form").action = document.querySelector('#delete-item').href
             });

@@ -1,0 +1,103 @@
+{% extends 'base/base.html' %}
+{% load static %}
+{% load custom_tags %}
+{% block css %}
+    <link href="{% static 'lib/datatables.net-dt/css/jquery.dataTables.min.css' %}" rel="stylesheet">
+    <link href="{% static 'lib/datatables.net-responsive-dt/css/responsive.dataTables.min.css' %}" rel="stylesheet">
+    <link href="{% static 'lib/select2/css/select2.min.css' %}" rel="stylesheet">
+    <link href="{% static 'ajax_datatable/css/style.css' %}" rel="stylesheet"/>
+    <link href="{% static 'lib/datatables.net-dt/css/jquery.dataTables.min.css' %}" rel="stylesheet">
+    <link href="{% static 'lib/datatables.net-responsive-dt/css/responsive.dataTables.min.css' %}" rel="stylesheet">
+{% endblock %}
+{% block content %}
+    <div class="container">
+    <h1 class="df-title">Detail Surat {{ object.nomor_surat_lengkap }}</h1>
+    <div class="col-md">
+        {#            {% if request.user|has_group:"Pimpinan" %}#}
+        {#            {% elif request.user|has_group:"Pelaksana" %}#}
+        {#                <p>#}
+        {#                    <a class="btn btn-primary" href="{% url 'kajian:kajian_tambah_progres' object.id %}">Tambah Progres#}
+        {#                        Kajian</a>#}
+        {#                </p>#}
+        {#            {% endif %}#}
+
+        <div class="col-md">
+        {% if object.id|check_profile:user %}
+            <form method="post"  action="{% url 'surat:update_status' object.id %}">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-info btn-info">Sudah dibaca</button>
+            </form>
+        {% endif %}
+
+        </div>
+    <br>
+
+        <div class="col-lg">
+            <table class="table table-striped table-hover table-primary">
+                <tbody>
+
+                <tr>
+                    <td width="200">Nomor Surat</td>
+                    <td width="5">:</td>
+                    <td>{{ object.nomor_surat_lengkap }}</td>
+                </tr>
+                <tr>
+                    <td width="200">Tanggal Surat</td>
+                    <td width="5">:</td>
+                    <td>{{ object.tanggal }}</td>
+                </tr>
+                <tr>
+                    <td width="200">Pengirim Surat</td>
+                    <td width="5">:</td>
+                    <td>{{ object.fungsi }}</td>
+                </tr>
+                <tr>
+                    <td width="200">Tujuan Surat</td>
+                    <td width="5">:</td>
+                    <td>
+                        <ul>
+                            {% for i in object.tujuan.all %}
+                                <li>{{ i }}</li>
+                            {% endfor %}
+                        </ul>
+                    </td>
+                </tr>
+                <tr>
+                    <td width="200">Pejabat Penandatangan</td>
+                    <td width="5">:</td>
+                    <td>{{ object.pejabat_penandatangan }}</td>
+                </tr>
+                <tr>
+                    <td width="200">Perihal Surat</td>
+                    <td width="5">:</td>
+                    <td>{{ object.perihal }}</td>
+                </tr>
+                <tr>
+                    <td width="200">File</td>
+                    <td width="5">:</td>
+                    <td>
+                        {% if object.file_dokumen %}
+                            <a href="{{ object.file_dokumen.url }}">File</a>
+                            {#                            <embed src="{{ object.file.url }}" type="application/pdf" width="100%" height="100%">#}
+                        {% else %}
+                            <p>belum upload</p>
+                        {% endif %}
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}
+
+{% block js %}
+    <script src="{% static 'lib/datatables.net/js/jquery.dataTables.min.js' %}"></script>
+    <script src="{% static 'lib/datatables.net-dt/js/dataTables.dataTables.min.js' %}"></script>
+    <script src="{% static 'lib/datatables.net-responsive/js/dataTables.responsive.min.js' %}"></script>
+    <script src="{% static 'lib/datatables.net-responsive-dt/js/responsive.dataTables.min.js' %}"></script>
+    <script src="{% static 'lib/select2/js/select2.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'ajax_datatable/js/utils.js' %}"></script>
+    <script src="{% static 'lib/jqueryui/jquery-ui.min.js' %}"></script>
+{% endblock %}
+
+

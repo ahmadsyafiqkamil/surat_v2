@@ -53,10 +53,10 @@ class JenisDokumen(models.Model):
 
 class Dokumen(models.Model):
     pilihan_status = [
-        ('0', 'BELUM DIPROSES'),
-        ('1', 'PROSES'),
-        ('2', 'DISPOSISI'),
-        ('3', 'BATAL'),
+        ('0', 'BELUM DIBACA'),
+        ('1', 'SUDAH DIBACA'),
+        # ('2', 'DISPOSISI'),
+        # ('3', 'BATAL'),
 
     ]
     id = models.UUIDField('id', default=uuid.uuid4, primary_key=True, unique=True,

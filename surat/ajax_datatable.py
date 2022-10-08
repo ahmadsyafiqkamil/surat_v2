@@ -20,6 +20,7 @@ class SuratAjaxView(AjaxDatatableView):
         {'name': 'id', 'visible': False, },
         {'name': 'nomor_surat_lengkap', 'title': "Nomor Surat", 'visible': True, },
         {'name': 'fungsi', 'title': "Pengirim", 'visible': True, },
+        {'name': 'tanggal', 'title': "Tanggal", 'visible': True, },
         {'name': 'tujuan', 'visible': True, 'title': 'Tujuan Nota Dinas', 'm2m_foreign_field': 'tujuan__fungsi'},
         {'name': 'perihal', 'visible': True, 'title': 'Perihal', },
         {'name': 'file_dokumen', 'visible': True, 'title': 'Dokumen', },
@@ -39,8 +40,8 @@ class SuratAjaxView(AjaxDatatableView):
 
         row['action'] = f"""
                                 <a href="#" class="btn btn-primary" id="add" 
-                                    onclick="add('{row['pk']}'); " >
-                                       Tambah Progress
+                                    onclick="detail('{row['pk']}'); " >
+                                       Detail
                                     </a>
                             """
 
@@ -63,6 +64,7 @@ class SuratKeluarAjaxView(AjaxDatatableView):
         {'name': 'id', 'visible': False, },
         {'name': 'nomor_surat_lengkap', 'title': "Nomor Surat", 'visible': True, },
         {'name': 'fungsi', 'title': "Pengirim", 'visible': True, },
+        {'name': 'tanggal', 'title': "Tanggal", 'visible': True, },
         {'name': 'tujuan', 'visible': True, 'title': 'Tujuan Nota Dinas', 'm2m_foreign_field': 'tujuan__fungsi'},
         {'name': 'perihal', 'visible': True, 'title': 'Perihal', },
         {'name': 'file_dokumen', 'visible': True, 'title': 'Dokumen', },
@@ -81,6 +83,10 @@ class SuratKeluarAjaxView(AjaxDatatableView):
                """ % path_file
 
         row['action'] = f"""
+                                <a href="#" class="btn btn-primary" id="add" 
+                                    onclick="detail('{row['pk']}'); " >
+                                       Detail
+                                    </a>
                                 <a href="#" class="btn btn-info btn-edit" id="edit"
                                 onclick="edit('{row['pk']}'); " >
                                    Edit
