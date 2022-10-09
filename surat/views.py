@@ -3,10 +3,10 @@ from django.shortcuts import get_object_or_404, redirect
 from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin
 from notifications.utils import slug2id
-from .models import Dokumen, Profile
+from .models import Dokumen, Profile, TujuanDokumen
 from .forms import DokumenForm
 from django.urls import reverse_lazy
-from django.db.models import Max
+from django.db.models import Max, Q
 from notifications.signals import notify
 from django.contrib.auth.models import User
 
@@ -170,6 +170,9 @@ class DetailSurat(LoginRequiredMixin, generic.DetailView):
 
 
 def UpdateStatus(request, pk):
-    Dokumen = Dokumen.objects.get(id=pk)
-    Dokumen.status = 1
-    return reverse_lazy('surat:detail_surat', kwargs={'pk': pk})
+    # print(TujuanDokumen.objects.get(pk=pk))
+    tujuan_dokumen = TujuanDokumen.objects.get(pk=pk)
+    tujuan_dokumen.status = 1
+    tujuan_dokumen.save()
+    return redirect("surat:daftar-surat")
+    # pass

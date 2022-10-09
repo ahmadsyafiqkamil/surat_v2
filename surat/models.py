@@ -4,6 +4,7 @@ from .validator import validate_file_extension
 from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+from django.core import serializers
 
 
 #
@@ -31,6 +32,7 @@ class Klasifikasi(models.Model):
 class Fungsi(models.Model):
     kode = models.CharField(max_length=10, verbose_name='Kode Fungsi')
     fungsi = models.CharField(max_length=100, verbose_name='Fungsi / Bidang Teknis')
+
     # koordinator = models.ForeignKey(User, on_delete=models.CASCADE, related_name='koordinator',verbose_name='Koordinator Fungsi')
 
     class Meta:
@@ -38,6 +40,8 @@ class Fungsi(models.Model):
 
     def __str__(self):
         return self.fungsi
+
+
 #
 #
 class JenisDokumen(models.Model):
@@ -73,7 +77,8 @@ class Dokumen(models.Model):
                                       related_name='jenis')
     klasifikasi = models.ForeignKey(Klasifikasi, on_delete=models.CASCADE, verbose_name='Tujuan Dokumen',
                                     related_name='klasifikasi_dokumen')
-    file_dokumen = models.FileField(upload_to='document/%Y-%m-%d/', validators=[validate_file_extension], null=True, blank=True)
+    file_dokumen = models.FileField(upload_to='document/%Y-%m-%d/', validators=[validate_file_extension], null=True,
+                                    blank=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True, verbose_name='Pengirim',
                              related_name='pengirim')
     tujuan_eksternal = models.TextField(blank=True, null=True, verbose_name='Tujuan Eksternal')
@@ -84,15 +89,24 @@ class Dokumen(models.Model):
 
     def __str__(self):
         return self.nomor_surat_lengkap
+
+
 #
 #
 class TujuanDokumen(models.Model):
     # status
     # 0 = unread
     # 1 = readS
+    pilihan_status = [
+        ('0', 'BELUM DIBACA'),
+        ('1', 'SUDAH DIBACA'),
+        # ('2', 'DISPOSISI'),
+        # ('3', 'BATAL'),
+
+    ]
     dokumen = models.ForeignKey(Dokumen, on_delete=models.CASCADE)
     fungsi = models.ForeignKey(Fungsi, on_delete=models.CASCADE, related_name="fungsi_tujuan")
-    status = models.IntegerField(verbose_name="Status", null=True, blank=True, default=0)
+    status = models.IntegerField(verbose_name="Status", null=True, blank=True, default=0, choices=pilihan_status)
 
     class Meta:
         db_table = 'tbl_tujuan_dokumen'
@@ -100,7 +114,8 @@ class TujuanDokumen(models.Model):
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    fungsi = models.ForeignKey(Fungsi,on_delete=models.CASCADE, blank=True,null=True, related_name="fungsi_profile")
+    fungsi = models.ForeignKey(Fungsi, on_delete=models.CASCADE, blank=True, null=True, related_name="fungsi_profile")
+
     # satker = models.CharField(max_length=100, null=True, blank=True, )
 
     def __str__(self):

@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 from .models import Profile
 from django.db.models import Q
 
-from .models import Dokumen
+from .models import Dokumen, TujuanDokumen
 
 
 class SuratAjaxView(AjaxDatatableView):
@@ -19,11 +19,12 @@ class SuratAjaxView(AjaxDatatableView):
         # AjaxDatatableView.render_row_tools_column_def(),
         {'name': 'id', 'visible': False, },
         {'name': 'nomor_surat_lengkap', 'title': "Nomor Surat", 'visible': True, },
-        {'name': 'fungsi', 'title': "Pengirim", 'visible': True, },
+        {'name': 'fungsi', 'title': "Pengirim", 'visible': True, 'orderable': True,},
         {'name': 'tanggal', 'title': "Tanggal", 'visible': True, },
         {'name': 'tujuan', 'visible': True, 'title': 'Tujuan Nota Dinas', 'm2m_foreign_field': 'tujuan__fungsi'},
         {'name': 'perihal', 'visible': True, 'title': 'Perihal', },
         {'name': 'file_dokumen', 'visible': True, 'title': 'Dokumen', },
+        {'name': 'status', 'visible': True, 'title': 'Status', },
         {'name': 'action', 'title': 'Aksi', 'searchable': False, 'orderable': False, },
     ]
 
@@ -34,16 +35,26 @@ class SuratAjaxView(AjaxDatatableView):
             path_file = file.file_dokumen.url
         else:
             path_file = "#"
+
         row['file_dokumen'] = """
                <a href="%s">file</a>
                """ % path_file
 
+        fungsi = Profile.objects.get(user__username=self.request.user)
+        status = TujuanDokumen.objects.get(dokumen_id=row["pk"], fungsi_id=fungsi.fungsi)
+        if status.status is 1:
+            text_status = "<p class='bg-primary'>SUDAH DIBACA</p>"
+        else:
+            text_status = "<p class='bg-info'>BELUM DIBACA</p>"
+
+        row["status"] = text_status
         row['action'] = f"""
                                 <a href="#" class="btn btn-primary" id="add" 
                                     onclick="detail('{row['pk']}'); " >
                                        Detail
                                     </a>
                             """
+
 
     def get_initial_queryset(self, request=None):
         fungsi = Profile.objects.values("fungsi").get(user=self.request.user)
@@ -69,6 +80,7 @@ class SuratKeluarAjaxView(AjaxDatatableView):
         {'name': 'perihal', 'visible': True, 'title': 'Perihal', },
         {'name': 'file_dokumen', 'visible': True, 'title': 'Dokumen', },
         {'name': 'action', 'title': 'Aksi', 'searchable': False, 'orderable': False, },
+
     ]
 
     def customize_row(self, row, obj):
