@@ -20,5 +20,7 @@ urlpatterns = [
 
     # re_path('kajian_edit/(?P<pk>[-\w]*)$', KajianEditView.as_view(), name='kajian_edit'),
     # re_path('mark-as-read/(?P<slug>\d+)/$', mark_as_read, name='mark_as_read'),
+    path('notifications/', NotificationListView.as_view(), name='notifications'),
+    re_path('mark-as-read/(?P<slug>\d+)/$', mark_as_read, name='mark_as_read'),
 
 ]

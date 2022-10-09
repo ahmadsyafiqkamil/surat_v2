@@ -10,6 +10,9 @@ from django.db.models import Max, Q
 from notifications.signals import notify
 from django.contrib.auth.models import User
 
+from notifications.signals import notify
+from notifications.models import Notification
+
 
 # Create your views here.
 class HomeView(LoginRequiredMixin, generic.TemplateView):
@@ -77,6 +80,7 @@ class TambahSurat(LoginRequiredMixin, generic.edit.CreateView):
         print(len(tujuan))
         post.user = self.request.user
         post.nomor_surat = nomor_surat
+
         print("{}.{}/{}/{}/{}/{}".format(kode_dokumen, nomor_surat, kode_klasifikasi, bulan, tahun, kode_fungsi))
         post.save()
         form.save_m2m()
@@ -84,7 +88,7 @@ class TambahSurat(LoginRequiredMixin, generic.edit.CreateView):
             penerima = Profile.objects.filter(fungsi_id=v)
             for i in penerima:
                 user_penerima = User.objects.get(username=i)
-                notify.send(self.request.user, recipient=user_penerima, verb=f'test')
+                notify.send(self.request.user, recipient=user_penerima, verb=f'test tambah surat {kode_dokumen}.{nomor_surat}/{kode_klasifikasi}/{bulan}/{tahun}/{kode_fungsi}')
 
         return redirect("surat:daftar-surat")
 
@@ -151,7 +155,7 @@ class EditSurat(LoginRequiredMixin, generic.edit.UpdateView):
             penerima = Profile.objects.filter(fungsi_id=v)
             for i in penerima:
                 user_penerima = User.objects.get(username=i)
-                notify.send(self.request.user, recipient=user_penerima, verb=f'test edit nomor surat {nomor_surat}')
+                notify.send(self.request.user, recipient=user_penerima, verb=f'test edit nomor surat {kode_dokumen}.{nomor_surat}/{kode_klasifikasi}/{bulan}/{tahun}/{kode_fungsi}')
 
         return redirect("surat:daftar-surat")
 
@@ -176,3 +180,30 @@ def UpdateStatus(request, pk):
     tujuan_dokumen.save()
     return redirect("surat:daftar-surat")
     # pass
+
+
+@login_required
+def mark_as_read(request, slug=None):
+    notification_id = slug2id(slug)
+    print(notification_id)
+    print(request.user)
+
+    # Notification.
+    notification = get_object_or_404(Notification, recipient=request.user, id=notification_id)
+
+    notification.mark_as_read()
+    _next = request.GET.get('next')
+
+    if _next:
+        return redirect(_next)
+
+    return redirect('surat:notifications')
+
+
+
+class NotificationListView(LoginRequiredMixin, generic.ListView):
+    model = Notification
+    template_name = 'content/notifications.html'
+
+    def get_queryset(self):
+        return Notification.objects.filter(recipient_id=self.request.user)

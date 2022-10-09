@@ -1,0 +1,73 @@
+{% extends 'base/base.html' %}
+{% load static %}
+{% block css %}
+    <link href="{% static 'lib/datatables.net-dt/css/jquery.dataTables.min.css' %}" rel="stylesheet">
+    <link href="{% static 'lib/datatables.net-responsive-dt/css/responsive.dataTables.min.css' %}" rel="stylesheet">
+    <link href="{% static 'lib/select2/css/select2.min.css' %}" rel="stylesheet">
+    <link href="{% static 'ajax_datatable/css/style.css' %}" rel="stylesheet"/>
+    <link href="{% static 'lib/datatables.net-dt/css/jquery.dataTables.min.css' %}" rel="stylesheet">
+    <link href="{% static 'lib/datatables.net-responsive-dt/css/responsive.dataTables.min.css' %}" rel="stylesheet">
+{% endblock %}
+{% block content %}
+
+
+        <h1>Daftar Notifikasi</h1>
+{#        <div>#}
+{#            <a href='{% url "notifications:mark_all_as_read" %}' class="btn btn-info btn-info">Tandai sudah dibaca#}
+{#                semua</a>#}
+{##}
+{#        </div>#}
+{#        <br>#}
+        <table class="table" id="example1">
+            <thead>
+            <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Dari</th>
+                <th scope="col">Pesan</th>
+                <th scope="col">Aksi</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for i in object_list %}
+                <tr>
+                    <th scope="row">{{ forloop.counter }}</th>
+                    <td>{{ i.actor }}</td>
+                    <td>{{ i.verb }}</td>
+                    <td>
+                        {% if  i.unread %}
+                            <a href='{% url "surat:mark_as_read" i.slug %}' class="btn btn-info btn-info">Tandai sudah
+                                dibaca</a>
+                        {% else %}
+                            <a href='{% url "surat:mark_as_read" i.slug %}' class="btn btn-warning disabled">Sudah
+                                dibaca</a>
+                        {% endif %}
+
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+
+
+{% endblock %}
+
+{% block js %}
+    <script src="{% static 'lib/datatables.net/js/jquery.dataTables.min.js' %}"></script>
+    <script src="{% static 'lib/datatables.net-dt/js/dataTables.dataTables.min.js' %}"></script>
+    <script src="{% static 'lib/datatables.net-responsive/js/dataTables.responsive.min.js' %}"></script>
+    <script src="{% static 'lib/datatables.net-responsive-dt/js/responsive.dataTables.min.js' %}"></script>
+    <script src="{% static 'lib/select2/js/select2.min.js' %}"></script>
+
+    <script>
+        $('#example1').DataTable({
+            language: {
+                searchPlaceholder: 'Search...',
+                sSearch: '',
+                lengthMenu: '_MENU_ items/page',
+            }
+        });
+    </script>
+{% endblock %}
+
+

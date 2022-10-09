@@ -5,23 +5,21 @@
     <link href="{% static 'lib/ion-rangeslider/css/ion.rangeSlider.min.css' %}" rel="stylesheet">
 {% endblock %}
 {% block content %}
-    <div class="container">
-{#        <h1 class="df-title">{% if request.get_full_path == '/kajian/' %}Kajian{% else %}Edit Kajian{% endif %}</h1>#}
-        <form action="" method="post" enctype='multipart/form-data'>
-            {% csrf_token %}
-            <div class="form-row">
+    {#        <h1 class="df-title">{% if request.get_full_path == '/kajian/' %}Kajian{% else %}Edit Kajian{% endif %}</h1>#}
+    <form action="" method="post" enctype='multipart/form-data'>
+        {% csrf_token %}
+        <div class="form-row">
 
-                <div class="form-group col-lg-6">
-                    {% for i in form %}
-                        <label for="formGroupExampleInput" class="d-block">{{ i.label }}</label>
-                        {{ i }}
-                    {% endfor %}
-                </div>
+            <div class="form-group col-lg-6">
+                {% for i in form %}
+                    <label for="formGroupExampleInput" class="d-block">{{ i.label }}</label>
+                    {{ i }}
+                {% endfor %}
             </div>
-            <button class="btn btn-primary" type="submit">Submit</button>
-            <button class="btn btn-secondary" type="cancel">Cancel</button>
-        </form>
-    </div>
+        </div>
+        <button class="btn btn-primary" type="submit">Submit</button>
+        <button class="btn btn-secondary" type="cancel">Cancel</button>
+    </form>
 {% endblock %}
 
 {% block js %}
